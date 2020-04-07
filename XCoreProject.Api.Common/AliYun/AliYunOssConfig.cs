@@ -10,7 +10,7 @@ namespace XCoreProject.Api.Common.AliYun
 
         public static string AccessKeySecret = "feys6NNm9CRQQK4ansKSXZ1e2k24vD";
 
-        public static string Endpoint = "https://mnfile.mmdd168.com";
+        public static string Endpoint = "http://mnfile.mmdd168.com";
 
         public static string BucketName = "miaomuduoduo";
                

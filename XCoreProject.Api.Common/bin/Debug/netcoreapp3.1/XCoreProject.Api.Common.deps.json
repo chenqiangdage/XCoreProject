@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v3.1": {
       "XCoreProject.Api.Common/1.0.0": {
         "dependencies": {
+          "Aliyun.OSS.SDK.NetCore": "2.9.1",
           "Microsoft.AspNetCore.SignalR": "1.1.0",
           "Microsoft.Extensions.Caching.Memory": "3.1.0",
           "Microsoft.Extensions.Configuration.Json": "3.1.0",
@@ -18,6 +19,14 @@
         },
         "runtime": {
           "XCoreProject.Api.Common.dll": {}
+        }
+      },
+      "Aliyun.OSS.SDK.NetCore/2.9.1": {
+        "runtime": {
+          "lib/netstandard2.0/Aliyun.OSS.Core.dll": {
+            "assemblyVersion": "2.9.1.0",
+            "fileVersion": "2.9.1.0"
+          }
         }
       },
       "log4net/2.0.8": {
@@ -1362,6 +1371,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Aliyun.OSS.SDK.NetCore/2.9.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vtaFH1zHJ8jBVrZnYVOq4mLJ0LgInrYEsPvowXMtCYKRnNGLtMhn9m5oFhH/ANupfSpU2cYW13DQFfnOjh3qtw==",
+      "path": "aliyun.oss.sdk.netcore/2.9.1",
+      "hashPath": "aliyun.oss.sdk.netcore.2.9.1.nupkg.sha512"
     },
     "log4net/2.0.8": {
       "type": "package",

@@ -58,15 +58,27 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 产品重量
         /// </summary>
-        public string ProductWeight { get; set; }
+        public string ProductWeightL { get; set; }
         /// <summary>
         /// 产品高度
         /// </summary>
-        public string ProductHeight { get; set; }
+        public string ProductHeightL { get; set; }
         /// <summary>
         /// 产品宽度
         /// </summary>
-        public string ProductWidth { get; set; }
+        public string ProductWidthL { get; set; }
+        /// <summary>
+        /// 产品重量
+        /// </summary>
+        public string ProductWeightH { get; set; }
+        /// <summary>
+        /// 产品高度
+        /// </summary>
+        public string ProductHeightH { get; set; }
+        /// <summary>
+        /// 产品宽度
+        /// </summary>
+        public string ProductWidthH { get; set; }
         /// <summary>
         /// 产品被浏览次数
         /// </summary>
@@ -83,6 +95,10 @@ namespace XCoreProject.Api.Model.Models
         /// 有效截止时间
         /// </summary>
         public string EffecitiveTime { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remarks { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -139,5 +155,37 @@ namespace XCoreProject.Api.Model.Models
         /// 属性8
         /// </summary>
         public string Prop8 { get; set; }
+        /// <summary>
+        /// 属性9
+        /// </summary>
+        public string Prop9 { get; set; }
+        /// <summary>
+        /// 属性10
+        /// </summary>
+        public string Prop10 { get; set; }
+        /// <summary>
+        /// 属性11
+        /// </summary>
+        public string Prop11 { get; set; }
+        /// <summary>
+        /// 属性12
+        /// </summary>
+        public string Prop12 { get; set; }
+        /// <summary>
+        /// 属性13
+        /// </summary>
+        public string Prop13 { get; set; }
+        /// <summary>
+        /// 属性14
+        /// </summary>
+        public string Prop14 { get; set; }
+        /// <summary>
+        /// 属性15
+        /// </summary>
+        public string Prop15 { get; set; }
+        /// <summary>
+        /// 属性16
+        /// </summary>
+        public string Prop16 { get; set; }
     }
 }

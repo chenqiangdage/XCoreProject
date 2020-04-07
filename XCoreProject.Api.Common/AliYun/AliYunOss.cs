@@ -9,13 +9,27 @@ namespace XCoreProject.Api.Common.AliYun
 {
     public class AliYunOss
     {
-        public static OssClient client;        
-        public AliYunOss()
+        public static AliYunOss Instance
         {
-            InitAliYunOss();
+            get
+            {
+                if(_Instance == null)
+                {
+                    _Instance =new AliYunOss();
+                }
+                return _Instance;
+            }
+        }
+        private static AliYunOss _Instance;
+
+        public static OssClient client;
+        private AliYunOss()
+        {
+            client= InitAliYunOss();
         }
 
-        public void InitAliYunOss()
+
+        public static OssClient InitAliYunOss()
         {
             // 创建ClientConfiguration实例，按照您的需要修改默认参数。
             var conf = new ClientConfiguration();
@@ -23,7 +37,8 @@ namespace XCoreProject.Api.Common.AliYun
             conf.IsCname = true;             
             conf.MaxErrorRetry = 3;
             conf.ConnectionTimeout = 3000;
-            client = new OssClient(AliYunOssConfig.Endpoint,AliYunOssConfig.AccessKeyId,AliYunOssConfig.AccessKeySecret, conf);
+            
+            return new OssClient(AliYunOssConfig.Endpoint,AliYunOssConfig.AccessKeyId,AliYunOssConfig.AccessKeySecret, conf);
         }
 
         public bool PutFileToOss(Stream FileStream,string FileKey)

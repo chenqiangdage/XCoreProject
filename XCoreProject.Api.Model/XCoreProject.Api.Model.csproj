@@ -17,4 +17,7 @@
     <ProjectReference Include="..\XCoreProject.Api.Common\XCoreProject.Api.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dto\" />
+  </ItemGroup>
 </Project>

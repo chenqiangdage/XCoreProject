@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using XCoreProject.Api.Common.AliYun;
+using System.IO;
 
 namespace XCoreProject.Api.Controllers
 {
@@ -85,7 +87,23 @@ namespace XCoreProject.Api.Controllers
             });
         }
 
+        [HttpGet]
+        [Route("putfile")]
+        public  object Putfile()
+        {
+            FileStream fs = System.IO.File.Open("/Users/cq/Downloads/test.png", System.IO.FileMode.Open);
+            try
+            {
+                bool isok = AliYunOss.Instance.PutFileToOss(fs, "test.png");
 
+            }
+            catch(Exception ex)
+            {
+                fs.Close();
+            }
+           
+            return Ok(new { success = true });
+        }
         /// <summary>
         /// 获取JWT的方法2：给Nuxt提供
         /// </summary>

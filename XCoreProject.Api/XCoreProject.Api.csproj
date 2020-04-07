@@ -19,6 +19,10 @@
     <Content Remove="Hubs\**" />
     <EmbeddedResource Remove="Hubs\**" />
     <None Remove="Hubs\**" />
+    <None Remove="Log\GlobalExcepLogs_20200326.log" />
+    <None Remove="Log\GlobalExcepLogs_20200327.log" />
+    <None Remove="Log\RequestIpInfoLog.log" />
+    <None Remove="Log\GlobalExcepLogs_20200403.log" />
   </ItemGroup>
 
   <ItemGroup>
