@@ -9,6 +9,12 @@ namespace XCoreProject.Api.Model
     /// </summary>
     public class MessageModel<T>
     {
+        public MessageModel()
+        {
+            Code = 200;
+            msg = "success";
+        }
+
         /// <summary>
         /// 操作是否成功
         /// </summary>
@@ -17,6 +23,8 @@ namespace XCoreProject.Api.Model
         /// 返回信息
         /// </summary>
         public string msg { get; set; } = "服务器异常";
+
+        public int Code { get; set; }
         /// <summary>
         /// 返回数据集合
         /// </summary>
