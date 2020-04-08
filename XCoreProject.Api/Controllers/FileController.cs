@@ -12,6 +12,8 @@ using XCoreProject.Api.Common.Common;
 
 namespace XCoreProject.Api.Controllers
 {
+    [Route("api/[controller]/[action]")]
+    [ApiController]
     public class FileController : ControllerBase
     {
      
@@ -25,14 +27,16 @@ namespace XCoreProject.Api.Controllers
                 data.msg= "没有上传文件";
                 return data;
             }
-            //to do 怎么知道是地几张
+            //上传到oss
+            //返回这一批次ID，返回已上传的ID
+
             string BatchId = IdCreatorHelper.CreateId("treeSupp_");
 
           //  var currentPictureWithoutExtension = Path.GetFileNameWithoutExtension(formFile.FileName);
            // var currentPictureExtension = Path.GetExtension(formFile.FileName).ToUpper();
 
             ///返回批次ID
-            return "123";
+            return  data;
         }
 
     }
