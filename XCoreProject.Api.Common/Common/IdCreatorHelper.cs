@@ -17,5 +17,12 @@ namespace XCoreProject.Api.Common.Common
             string rand =  Guid.NewGuid().ToString().Replace("-", "").Substring(0, 5);
             return prefix + date + rand;
         }
+
+        public static string CreateIdNoTimestrap(string prefix,int length)
+        {
+           
+            string rand = Guid.NewGuid().ToString().Replace("-", "").Substring(0, length);
+            return prefix  + rand;
+        }
     }
 }

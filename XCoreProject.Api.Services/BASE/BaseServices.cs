@@ -50,6 +50,10 @@ namespace XCoreProject.Api.Services.BASE
         {
             return await BaseDal.Add(entity);
         }
+        public async Task<int> Add(List<TEntity> entitys)
+        {
+            return await BaseDal.Add(entitys);
+        }
 
         /// <summary>
         /// 更新实体数据

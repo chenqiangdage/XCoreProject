@@ -21,7 +21,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 文件大小
         /// </summary>
-        public int FileSize { get; set; }
+        public long FileSize { get; set; }
         /// <summary>
         /// 文件的网络地址
         /// </summary>
