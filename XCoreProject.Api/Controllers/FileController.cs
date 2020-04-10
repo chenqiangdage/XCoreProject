@@ -11,6 +11,7 @@ using XCoreProject.Api.Common.AliYun;
 using XCoreProject.Api.Model.Dto;
 using XCoreProject.Api.IServices;
 using XCoreProject.Api.Model.Models;
+using XCoreProject.Api.Common.Helper;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,16 +22,17 @@ namespace XCoreProject.Api.Controllers
     public class FileController : ControllerBase
     {
         readonly IFileCenterServices _fileCenterServices;
-
+        readonly ICacheHelper _cacheHelper;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="IFileCenterServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
-        public FileController(IFileCenterServices fileCenterServices)
+        public FileController(IFileCenterServices fileCenterServices, ICacheHelper IcacheHelper)
         {
             this._fileCenterServices = fileCenterServices;
+            _cacheHelper = IcacheHelper;
         }
 
         [HttpPost]
@@ -47,8 +49,8 @@ namespace XCoreProject.Api.Controllers
             }else
             {
                 //找到此batchid 已累计增加的index ,用缓存缓住
-                // to do 
-                currentIndex = 1;
+                string currindex =_cacheHelper.Get<string>(batchId);
+                currentIndex = int.Parse(string.IsNullOrEmpty(currindex)?"1":currindex);
             }
              
             IFormFileCollection cols = Request.Form.Files;       
@@ -63,24 +65,27 @@ namespace XCoreProject.Api.Controllers
             foreach (var tfile in cols.ToList())
             {
                 string fileName = IdCreatorHelper.CreateIdNoTimestrap("pubtree", 6) + ".jpg";
-                AliYunOss.Instance.PutFileToOss(tfile.OpenReadStream(), fileName);
-                upfileModels.files.Add(tfile.FileName, fileName);
-               
+                AliYunOss.Instance.PutFileToOss(tfile.OpenReadStream(), fileName);               
                 FileCenter f = new FileCenter();
                 f.BatchId = batchId;
                 f.BatchSeq = currentIndex;
                 f.CreateTime = DateTime.Now;
-                f.FileName = fileName;
+                f.FileName = tfile.FileName;
                 f.FileSize = tfile.Length;
                 f.Status = 0;
+                f.Url = AliYunOssConfig.Endpoint + "/" + fileName;
                 dbfiles.Add(f);
                 currentIndex++;
-                //to do set to cache
+                
             }
+            _cacheHelper.Set<string>(batchId, currentIndex.ToString(),DateTime.Now.AddHours(1));
             try
             {
                 await _fileCenterServices.Add(dbfiles);
-            }catch(Exception ex)
+                dbfiles.ForEach(u=> upfileModels.files.Add(u.FileName, u.Id));
+             
+            }
+            catch(Exception ex)
             {
                 string e = ex.ToString();
             }
@@ -88,10 +93,7 @@ namespace XCoreProject.Api.Controllers
 
             data.response = upfileModels;
 
-            //  var currentPictureWithoutExtension = Path.GetFileNameWithoutExtension(formFile.FileName);
-            // var currentPictureExtension = Path.GetExtension(formFile.FileName).ToUpper();
-
-            ///返回批次ID
+          
             return  data;
         }
 

@@ -154,9 +154,10 @@ namespace XCoreProject.Api.Repository.Base
         /// </summary>
         /// <param name="listEntity">实体集合</param>
         /// <returns>影响行数</returns>
-        public async Task<int> Add(List<TEntity> listEntity)
+        public async Task<bool> Add(List<TEntity> listEntity)
         {
-            return await _db.Insertable(listEntity.ToArray()).ExecuteCommandAsync();
+            //  return await _db.Insertable(listEntity.ToArray()).ExecuteCommandAsync();
+            return await  Db.Insertable(listEntity.ToArray()).ExecuteCommandIdentityIntoEntityAsync();
         }
 
         /// <summary>

@@ -26,6 +26,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using static XCoreProject.Api.SwaggerHelper.CustomApiVersion;
+using XCoreProject.Api.Common.Helper;
 
 namespace XCoreProject.Api
 {
@@ -109,7 +110,7 @@ namespace XCoreProject.Api
                 throw new Exception("Repository.dll和service.dll 丢失，因为项目解耦了，所以需要先F6编译，再F5运行，请检查 bin 文件夹，并拷贝。");
             }
 
-
+            builder.RegisterType(typeof(CacheHelper)).As(typeof(ICacheHelper));
 
             // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
             var cacheType = new List<Type>();
@@ -133,7 +134,7 @@ namespace XCoreProject.Api
                 builder.RegisterType<XCoreLogAOP>();
                 cacheType.Add(typeof(XCoreLogAOP));
             }
-
+          //  builder.RegisterType<>
             // 获取 Service.dll 程序集服务，并注册
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);
             builder.RegisterAssemblyTypes(assemblysServices)

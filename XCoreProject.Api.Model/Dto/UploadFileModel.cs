@@ -8,10 +8,10 @@ namespace XCoreProject.Api.Model.Dto
 
       public   UploadFileModel()
         {
-            files = new Dictionary<string, string>();
+            files = new Dictionary<string, int>();
         }
         public string BatchId { get; set; }
 
-        public Dictionary<string,string> files { get; set; }
+        public Dictionary<string,int> files { get; set; }
     }
 }
