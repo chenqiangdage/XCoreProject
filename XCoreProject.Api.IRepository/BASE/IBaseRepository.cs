@@ -15,9 +15,14 @@ namespace XCoreProject.Api.IRepository.Base
         Task<TEntity> QueryById(object objId, bool blnUseCache = false);
         Task<List<TEntity>> QueryByIDs(object[] lstIds);
 
+       
         Task<int> Add(TEntity model);
-        Task<bool> Add(List<TEntity> entitys);
-         
+        //IsIdAutoIncreased 主键是否自增，是自增，需要返回自增id到实体上面
+        Task<bool> AddIsIdentity(TEntity model);
+
+        Task<int> Add(List<TEntity> entitys);
+        //IsIdAutoIncreased 主键是否自增，是自增，需要返回自增id到实体上面
+        Task<bool> AddIsIdentity(List<TEntity> entitys);
         Task<bool> DeleteById(object id);
 
         Task<bool> Delete(TEntity model);

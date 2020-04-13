@@ -50,11 +50,19 @@ namespace XCoreProject.Api.Services.BASE
         {
             return await BaseDal.Add(entity);
         }
-        public async Task<bool> Add(List<TEntity> entitys)
+        public async Task<int> Add(List<TEntity> entitys)
         {
             return await BaseDal.Add(entitys);
         }
+        public async Task<bool> AddIsIdentity(TEntity model)
+        {
+            return await BaseDal.AddIsIdentity(model);
+        }
 
+        public async  Task<bool> AddIsIdentity(List<TEntity> listEntity)
+        {
+            return await BaseDal.AddIsIdentity(listEntity);
+        }
         /// <summary>
         /// 更新实体数据
         /// </summary>

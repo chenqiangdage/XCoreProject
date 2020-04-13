@@ -122,14 +122,52 @@ namespace XCoreProject.Api.Repository.Base
             //var i = await Task.Run(() => _db.Insertable(entity).ExecuteReturnBigIdentity());
             ////返回的i是long类型,这里你可以根据你的业务需要进行处理
             //return (int)i;
-
-            var insert = _db.Insertable(entity);
-            return await insert.ExecuteReturnIdentityAsync();
+            
+                var insert = _db.Insertable(entity);
+                return await insert.ExecuteReturnIdentityAsync();
+            
         }
 
-
-        
-
+        /// <summary>
+        /// 批量插入实体(速度快)
+        /// </summary>
+        /// <param name="listEntity">实体集合</param>
+        /// <returns>影响行数</returns>
+        public async Task<int> Add(List<TEntity> listEntity)
+        {
+            
+            return await Db.Insertable(listEntity).ExecuteCommandAsync();
+            // return await  Db.Insertable(listEntity).ExecuteCommandIdentityIntoEntityAsync();
+        }
+        /// <summary>
+        /// 插入实体  主键id会回写到实体
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<bool> AddIsIdentity(TEntity model)
+        {
+            var insert = _db.Insertable(model);
+            return await insert.ExecuteCommandIdentityIntoEntityAsync();
+        }
+        /// <summary>
+        /// 批量插入实体  主键id会回写到实体
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <returns></returns>
+        public async Task<bool> AddIsIdentity(List<TEntity> entitys)
+        {
+            bool isnotok = false;
+            foreach (TEntity t in entitys)
+            {
+                var insert = _db.Insertable(t);
+                 bool tisok= await insert.ExecuteCommandIdentityIntoEntityAsync();
+                if(tisok==false)
+                {
+                    isnotok = true;
+                }
+            }
+            return !isnotok;
+        }
         /// <summary>
         /// 写入实体数据
         /// </summary>
@@ -149,16 +187,7 @@ namespace XCoreProject.Api.Repository.Base
             }
         }
 
-        /// <summary>
-        /// 批量插入实体(速度快)
-        /// </summary>
-        /// <param name="listEntity">实体集合</param>
-        /// <returns>影响行数</returns>
-        public async Task<bool> Add(List<TEntity> listEntity)
-        {
-            //  return await _db.Insertable(listEntity.ToArray()).ExecuteCommandAsync();
-            return await  Db.Insertable(listEntity.ToArray()).ExecuteCommandIdentityIntoEntityAsync();
-        }
+       
 
         /// <summary>
         /// 更新实体数据

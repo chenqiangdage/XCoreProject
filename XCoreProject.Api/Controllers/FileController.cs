@@ -81,7 +81,7 @@ namespace XCoreProject.Api.Controllers
             _cacheHelper.Set<string>(batchId, currentIndex.ToString(),DateTime.Now.AddHours(1));
             try
             {
-                await _fileCenterServices.Add(dbfiles);
+                  bool isok = await _fileCenterServices.AddIsIdentity(dbfiles);
                 dbfiles.ForEach(u=> upfileModels.files.Add(u.FileName, u.Id));
              
             }

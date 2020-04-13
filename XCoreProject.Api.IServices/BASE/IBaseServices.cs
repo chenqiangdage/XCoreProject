@@ -15,7 +15,9 @@ namespace XCoreProject.Api.IServices.BASE
         Task<List<TEntity>> QueryByIDs(object[] lstIds);
 
         Task<int> Add(TEntity model);
-        Task<bool> Add(List<TEntity> listEntity);
+        Task<int> Add(List<TEntity> listEntity);
+        Task<bool> AddIsIdentity(TEntity model);
+        Task<bool> AddIsIdentity(List<TEntity> listEntity);
         Task<bool> DeleteById(object id);
 
         Task<bool> Delete(TEntity model);
