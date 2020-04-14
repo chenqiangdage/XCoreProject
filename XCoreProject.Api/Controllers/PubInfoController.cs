@@ -16,7 +16,7 @@ namespace XCoreProject.Api.Controllers
         
         public void PushOne([FromBody] TreeOrderModel pubTreeModel)
         {
-
+            
         }
     }
 }

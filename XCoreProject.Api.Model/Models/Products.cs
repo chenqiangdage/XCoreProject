@@ -16,13 +16,13 @@ namespace XCoreProject.Api.Model.Models
         /// </summary>
         public string CategoryName { get; set; }
         /// <summary>
-        /// 产品主图(在文件中心里的id)
+        /// 产品主图 
         /// </summary>
-        public string ProductImgId { get; set; }
+        public string ProductImgUrl { get; set; }
         /// <summary>
-        /// 产品缩略图(文件中心里的id)
+        /// 产品缩略图地址
         /// </summary>
-        public string ThumbnailId { get; set; }
+        public string ThumbnailUrl { get; set; }
         /// <summary>
         /// 产品描述
         /// </summary>

@@ -60,13 +60,25 @@ namespace XCoreProject.Api.Controllers
                 return data;
             }
             //上传到oss
+            string AliossFolder = DateTime.Now.ToString("yyyyMMddHH");
             List<FileCenter> dbfiles = new List<FileCenter>();
             upfileModels.BatchId = batchId;
-            foreach (var tfile in cols.ToList())
+            List<IFormFile> postFiles = cols.ToList();
+            for(int i=0;i<postFiles.Count;i++)
             {
+                var tfile = postFiles[i];
+
                 string fileName = IdCreatorHelper.CreateIdNoTimestrap("pubtree", 6) + ".jpg";
-                AliYunOss.Instance.PutFileToOss(tfile.OpenReadStream(), fileName);               
+                AliYunOss.Instance.PutFileToOss(tfile.OpenReadStream(), AliossFolder+"/"+ fileName);               
                 FileCenter f = new FileCenter();
+                if (i == 0)//默认第一个设置缩略图，设为主图 
+                {
+                    //压缩一个缩略图，
+                    //上传这个图片
+                    //TODO 
+                    f.ExterndAtt = "THUMB";
+                }
+
                 f.BatchId = batchId;
                 f.BatchSeq = currentIndex;
                 f.CreateTime = DateTime.Now;
@@ -92,11 +104,29 @@ namespace XCoreProject.Api.Controllers
             //返回这一批次ID，返回已上传的ID
 
             data.response = upfileModels;
-
-          
             return  data;
         }
+        /// <summary>
+        /// 删除图片
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<string>> DeleteThisFile(int? fileId)
+        {
+            var data = new MessageModel<string>();
+            if (!fileId.HasValue)
+            {
+                data.msg = "没参数";
+                return data;
+            }
+            //检测一下，如果是主图，要重新生成主图和缩略图信息 TODO
 
+            bool isOK = await _fileCenterServices.DeleteById(fileId.Value);
+            data.msg = isOK ? "删除成功" : "删除失败";
+            return data;
+        }
+        
     }
 }
 
