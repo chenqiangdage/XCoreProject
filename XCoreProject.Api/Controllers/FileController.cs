@@ -68,15 +68,17 @@ namespace XCoreProject.Api.Controllers
             {
                 var tfile = postFiles[i];
 
-                string fileName = IdCreatorHelper.CreateIdNoTimestrap("pubtree", 6) + ".jpg";
-                AliYunOss.Instance.PutFileToOss(tfile.OpenReadStream(), AliossFolder+"/"+ fileName);               
+                string fileName = AliossFolder + "/" + IdCreatorHelper.CreateIdNoTimestrap("pubtree", 6) + ".jpg";
+                AliYunOss.Instance.PutFileToOss(tfile.OpenReadStream(), fileName);               
                 FileCenter f = new FileCenter();
-                if (i == 0)//默认第一个设置缩略图，设为主图 
+                if (currentIndex == 1)//默认第一个设置缩略图，设为主图 
                 {
-                    //压缩一个缩略图，
-                    //上传这个图片
-                    //TODO 
-                    f.ExterndAtt = "THUMB";
+                    string filethumbName = IdCreatorHelper.CreateIdNoTimestrap("thumbpubtree", 6) + ".jpg";
+                    FileCenter  thumbfile =await  CreateThumb(tfile, batchId, AliossFolder+"/"+filethumbName);
+                    dbfiles.Add(thumbfile);
+                    upfileModels.ThumbnailUrl = thumbfile.Url;
+                    upfileModels.MainPic = AliYunOssConfig.Endpoint + fileName;//第一个默认主图
+                    f.ExterndAtt = "THUMBONTHIS"; //设置浮标，标明 缩略图建立在这个图上
                 }
 
                 f.BatchId = batchId;
@@ -85,7 +87,7 @@ namespace XCoreProject.Api.Controllers
                 f.FileName = tfile.FileName;
                 f.FileSize = tfile.Length;
                 f.Status = 0;
-                f.Url = AliYunOssConfig.Endpoint + "/" + fileName;
+                f.Url = AliYunOssConfig.Endpoint +  fileName;
                 dbfiles.Add(f);
                 currentIndex++;
                 
@@ -112,21 +114,92 @@ namespace XCoreProject.Api.Controllers
         /// <param name="fileId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> DeleteThisFile(int? fileId)
+        public async Task<MessageModel<UploadFileModel>> DeleteThisFile(int? fileId)
         {
-            var data = new MessageModel<string>();
+            var data = new MessageModel<UploadFileModel>();
+            UploadFileModel upfileModels = new UploadFileModel();
             if (!fileId.HasValue)
             {
                 data.msg = "没参数";
                 return data;
             }
-            //检测一下，如果是主图，要重新生成主图和缩略图信息 TODO
+           
+            FileCenter tfile = await _fileCenterServices.QueryById(fileId.Value);
+           
+            if(tfile!=null && tfile.ExterndAtt== "THUMBONTHIS")
+            {
+                //检测一下，如果是主图，要重新生成主图和缩略图信息
+                //下载下来这个批次中排首的图，重新生成缩略图
+               FileCenter  nextfile = await  _fileCenterServices.GetFirstOneExceptMe(tfile.BatchId, tfile.Id);
+                //更新这个图为主图
+               Stream s = AliYunOss.Instance.GetFileFromAliOss(nextfile.Url.Replace(AliYunOssConfig.Endpoint,""));
+                if (nextfile != null)
+                {
+                    string filethumbName = IdCreatorHelper.CreateIdNoTimestrap("thumbpubtree", 6) + ".jpg";
+                    string AliossFolder = DateTime.Now.ToString("yyyyMMddHH");
+                    string  newthumbUrl =  await CreateThumb(s, nextfile.BatchId, AliossFolder + "/" + filethumbName);
+                    nextfile.ExterndAtt = "THUMBONTHIS";
+                    //更新这个批次的缩略图信息
 
+                    bool thumbok =   _fileCenterServices.UpdateThisFileUrlByBatchIdAndSeq(nextfile.BatchId,0,newthumbUrl);
+                    bool isOk = await _fileCenterServices.Update(nextfile);
+                    upfileModels.MainPic = nextfile.Url;
+                    upfileModels.ThumbnailUrl = newthumbUrl;
+                }
+
+            }
             bool isOK = await _fileCenterServices.DeleteById(fileId.Value);
             data.msg = isOK ? "删除成功" : "删除失败";
             return data;
         }
-        
+
+
+        private async Task<FileCenter> CreateThumb(IFormFile tfile,string batchId,string fileName)
+        {
+            string timepre= Guid.NewGuid().ToString().Replace("-","");
+            string tempfile = "/Users/cq/Downloads/"+ timepre + "temp.jpg";
+            string tempthumbfile = "/Users/cq/Downloads/"+ timepre + "tempthumb.jpg";
+            var stream = System.IO.File.Create(tempfile);
+            await tfile.CopyToAsync(stream);
+            //压缩
+            ImageHelper.CompressImage(tempfile, tempthumbfile, 50);
+            var thumbstream = System.IO.File.Open(tempthumbfile, FileMode.Open);
+            AliYunOss.Instance.PutFileToOss(thumbstream,   fileName);
+            thumbstream.Close();
+            stream.Close();
+            System.IO.File.Delete(tempfile);
+            System.IO.File.Delete(tempthumbfile);
+            FileCenter f = new FileCenter();
+            f.BatchId = batchId;
+            f.BatchSeq = 0;//序号0 一定设置是缩略图
+            f.CreateTime = DateTime.Now;
+            f.FileName = tfile.FileName;
+            f.FileSize = tfile.Length;
+            f.Status = 0;
+            f.Url = AliYunOssConfig.Endpoint +  fileName;
+            f.ExterndAtt = "THUMB";
+            return f;
+        }
+
+        private async Task<string> CreateThumb(Stream fileStream, string batchId, string fileName)
+        {
+            string timepre = Guid.NewGuid().ToString().Replace("-", "");
+            string tempfile = "/Users/cq/Downloads/" + timepre + "temp.jpg";
+            string tempthumbfile = "/Users/cq/Downloads/" + timepre + "tempthumb.jpg";
+            var stream = System.IO.File.Create(tempfile);
+            await fileStream.CopyToAsync(stream);
+            //压缩
+            ImageHelper.CompressImage(tempfile, tempthumbfile, 50);
+            var thumbstream = System.IO.File.Open(tempthumbfile, FileMode.Open);
+            AliYunOss.Instance.PutFileToOss(thumbstream, fileName);
+            thumbstream.Close();
+            stream.Close();
+            System.IO.File.Delete(tempfile);
+            System.IO.File.Delete(tempthumbfile);
+            
+            return  AliYunOssConfig.Endpoint + fileName;
+             
+        }
     }
 }
 

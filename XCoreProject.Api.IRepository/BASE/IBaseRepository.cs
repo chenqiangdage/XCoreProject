@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using SqlSugar;
 
 namespace XCoreProject.Api.IRepository.Base
 {
@@ -32,7 +33,7 @@ namespace XCoreProject.Api.IRepository.Base
         Task<bool> Update(TEntity model);
         Task<bool> Update(TEntity entity, string strWhere);
         Task<bool> Update(object operateAnonymousObjects);
-
+        Task<bool> Update(string strSql, SugarParameter[] parameters = null);
         Task<bool> Update(TEntity entity, List<string> lstColumns = null, List<string> lstIgnoreColumns = null, string strWhere = "");
 
         Task<List<TEntity>> Query();

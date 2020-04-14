@@ -80,7 +80,7 @@ namespace XCoreProject.Api.Repository.Base
             _dbBase = unitOfWork.GetDbClient();
         }
 
-
+      
 
         public async Task<TEntity> QueryById(object objId)
         {
