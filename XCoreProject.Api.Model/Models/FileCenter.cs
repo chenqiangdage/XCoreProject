@@ -18,6 +18,8 @@ namespace XCoreProject.Api.Model.Models
         /// </summary>
         [SugarColumn(Length = 50, IsNullable = true, ColumnDataType = "nvarchar")]
         public string FileName { get; set; }
+        [SugarColumn(Length = 250, IsNullable = true, ColumnDataType = "nvarchar")]
+        public string OssKey { get; set; }
         /// <summary>
         /// 文件大小
         /// </summary>

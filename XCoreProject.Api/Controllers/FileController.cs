@@ -80,7 +80,7 @@ namespace XCoreProject.Api.Controllers
                     FileCenter  thumbfile =await  CreateThumb(tfile, batchId, AliossFolder+"/"+filethumbName);
                     dbfiles.Add(thumbfile);
                     upfileModels.ThumbnailUrl = thumbfile.Url;
-                    upfileModels.MainPic = AliYunOssConfig.Endpoint + fileName;//第一个默认主图
+                    upfileModels.MainPic = AliYunOssConfig.Endpoint +"/"+ fileName;//第一个默认主图
                     f.ExterndAtt = "THUMBONTHIS"; //设置浮标，标明 缩略图建立在这个图上
                 }
 
@@ -90,7 +90,8 @@ namespace XCoreProject.Api.Controllers
                 f.FileName = tfile.FileName;
                 f.FileSize = tfile.Length;
                 f.Status = 0;
-                f.Url = AliYunOssConfig.Endpoint +  fileName;
+                f.OssKey = fileName;
+                f.Url = AliYunOssConfig.Endpoint + "/"+ fileName;
                 dbfiles.Add(f);
                 currentIndex++;
                 
@@ -144,7 +145,7 @@ namespace XCoreProject.Api.Controllers
                     nextfile.ExterndAtt = "THUMBONTHIS";
                     //更新这个批次的缩略图信息
 
-                    bool thumbok =   _fileCenterServices.UpdateThisFileUrlByBatchIdAndSeq(nextfile.BatchId,0,newthumbUrl);
+                    bool thumbok =  await _fileCenterServices.UpdateThisFileUrlByBatchIdAndSeq(nextfile.BatchId,0,newthumbUrl);
                     bool isOk = await _fileCenterServices.Update(nextfile);
                     upfileModels.MainPic = nextfile.Url;
                     upfileModels.ThumbnailUrl = newthumbUrl;
@@ -171,7 +172,7 @@ namespace XCoreProject.Api.Controllers
             await tfile.CopyToAsync(stream);
             stream.Close();
             //压缩
-            ImageHelper.CompressImage(tempfile, tempthumbfile, 50);
+            ImageHelper.CompressImage(tempfile, tempthumbfile, 50,10);
             var thumbstream = System.IO.File.Open(tempthumbfile, FileMode.Open);
             AliYunOss.Instance.PutFileToOss(thumbstream,   fileName);
             thumbstream.Close();
@@ -182,10 +183,11 @@ namespace XCoreProject.Api.Controllers
             f.BatchId = batchId;
             f.BatchSeq = 0;//序号0 一定设置是缩略图
             f.CreateTime = DateTime.Now;
-            f.FileName = tfile.FileName;
+            f.FileName = "thumb"+tfile.FileName;
             f.FileSize = tfile.Length;
             f.Status = 0;
-            f.Url = AliYunOssConfig.Endpoint +  fileName;
+            f.OssKey = fileName;
+            f.Url = AliYunOssConfig.Endpoint +"/"+  fileName;
             f.ExterndAtt = "THUMB";
             return f;
         }
@@ -203,7 +205,7 @@ namespace XCoreProject.Api.Controllers
             var stream = System.IO.File.Create(tempfile);
             await fileStream.CopyToAsync(stream);
             //压缩
-            ImageHelper.CompressImage(tempfile, tempthumbfile, 50);
+            ImageHelper.CompressImage(tempfile, tempthumbfile, 50,10);
             var thumbstream = System.IO.File.Open(tempthumbfile, FileMode.Open);
             AliYunOss.Instance.PutFileToOss(thumbstream, fileName);
             thumbstream.Close();

@@ -12,6 +12,6 @@ namespace XCoreProject.Api.IServices
     public interface IFileCenterServices : IBaseServices<FileCenter>
     {
         Task<FileCenter> GetFirstOneExceptMe(string batchId,int fileId);
-        bool UpdateThisFileUrlByBatchIdAndSeq(string batchId, int seq,string url);
+        Task<bool> UpdateThisFileUrlByBatchIdAndSeq(string batchId, int seq,string url);
     }
 }

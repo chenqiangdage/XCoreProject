@@ -40,13 +40,11 @@ namespace XCoreProject.Api.Services
         /// <param name="batchId"></param>
         /// <param name="seq"></param>
         /// <returns></returns>
-        public  bool UpdateThisFileUrlByBatchIdAndSeq(string batchId, int seq,string url)
+        public async Task<bool> UpdateThisFileUrlByBatchIdAndSeq(string batchId, int seq,string url)
         {
             string sql = "update filecenter set Url=@url where batchId=@batchId and BatchSeq=@batchSeq";
 
-           bool ok=   _dal.Update(sql, new SugarParameter[]{
-                              new SugarParameter("@url",url),
-                              new SugarParameter("@batchSeq",seq));
+           bool ok=  await  _dal.Update(sql, new SugarParameter[]{new SugarParameter("@url",url), new SugarParameter("@batchSeq",seq)});
             return ok;
         }
     }
