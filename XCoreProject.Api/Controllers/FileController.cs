@@ -136,7 +136,7 @@ namespace XCoreProject.Api.Controllers
                 //下载下来这个批次中排首的图，重新生成缩略图
                FileCenter  nextfile = await  _fileCenterServices.GetFirstOneExceptMe(tfile.BatchId, tfile.Id);
                 //更新这个图为主图
-               Stream s = AliYunOss.Instance.GetFileFromAliOss(nextfile.Url.Replace(AliYunOssConfig.Endpoint,""));
+               Stream s = AliYunOss.Instance.GetFileFromAliOss(nextfile.OssKey);
                 if (nextfile != null)
                 {
                     string filethumbName = IdCreatorHelper.CreateIdNoTimestrap("thumbpubtree", 6) + ".jpg";
@@ -149,6 +149,7 @@ namespace XCoreProject.Api.Controllers
                     bool isOk = await _fileCenterServices.Update(nextfile);
                     upfileModels.MainPic = nextfile.Url;
                     upfileModels.ThumbnailUrl = newthumbUrl;
+                    data.response = upfileModels;
                 }
 
             }
@@ -204,16 +205,17 @@ namespace XCoreProject.Api.Controllers
             string tempthumbfile = tempfolder +"/" + timepre + "tempthumb.jpg";
             var stream = System.IO.File.Create(tempfile);
             await fileStream.CopyToAsync(stream);
+            stream.Close();
             //压缩
             ImageHelper.CompressImage(tempfile, tempthumbfile, 50,10);
             var thumbstream = System.IO.File.Open(tempthumbfile, FileMode.Open);
             AliYunOss.Instance.PutFileToOss(thumbstream, fileName);
             thumbstream.Close();
-            stream.Close();
+            
             System.IO.File.Delete(tempfile);
             System.IO.File.Delete(tempthumbfile);
             
-            return  AliYunOssConfig.Endpoint + fileName;
+            return  AliYunOssConfig.Endpoint +"/"+ fileName;
              
         }
     }

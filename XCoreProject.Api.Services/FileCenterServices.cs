@@ -44,7 +44,7 @@ namespace XCoreProject.Api.Services
         {
             string sql = "update filecenter set Url=@url where batchId=@batchId and BatchSeq=@batchSeq";
 
-           bool ok=  await  _dal.Update(sql, new SugarParameter[]{new SugarParameter("@url",url), new SugarParameter("@batchSeq",seq)});
+           bool ok=  await  _dal.Update(sql, new SugarParameter[]{new SugarParameter("@url",url), new SugarParameter("@batchId", batchId),new SugarParameter("@batchSeq",seq)});
             return ok;
         }
     }
