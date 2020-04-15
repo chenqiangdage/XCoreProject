@@ -12,6 +12,7 @@ using XCoreProject.Api.Model.Dto;
 using XCoreProject.Api.IServices;
 using XCoreProject.Api.Model.Models;
 using XCoreProject.Api.Common.Helper;
+using Microsoft.AspNetCore.Hosting;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,16 +24,18 @@ namespace XCoreProject.Api.Controllers
     {
         readonly IFileCenterServices _fileCenterServices;
         readonly ICacheHelper _cacheHelper;
+        IWebHostEnvironment _env;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="IFileCenterServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
-        public FileController(IFileCenterServices fileCenterServices, ICacheHelper IcacheHelper)
+        public FileController(IFileCenterServices fileCenterServices, ICacheHelper IcacheHelper, IWebHostEnvironment env)
         {
             this._fileCenterServices = fileCenterServices;
             _cacheHelper = IcacheHelper;
+            _env = env;
         }
 
         [HttpPost]
@@ -157,16 +160,22 @@ namespace XCoreProject.Api.Controllers
         private async Task<FileCenter> CreateThumb(IFormFile tfile,string batchId,string fileName)
         {
             string timepre= Guid.NewGuid().ToString().Replace("-","");
-            string tempfile = "/Users/cq/Downloads/"+ timepre + "temp.jpg";
-            string tempthumbfile = "/Users/cq/Downloads/"+ timepre + "tempthumb.jpg";
+            string tempfolder = _env.WebRootPath + "/" + "thumbTemp";
+            if(!Directory.Exists(tempfolder))
+            {
+                Directory.CreateDirectory(tempfolder);
+            }
+            string tempfile = tempfolder + "/" + timepre + "temp.jpg";
+            string tempthumbfile = tempfolder +"/"+ timepre + "tempthumb.jpg";
             var stream = System.IO.File.Create(tempfile);
             await tfile.CopyToAsync(stream);
+            stream.Close();
             //压缩
             ImageHelper.CompressImage(tempfile, tempthumbfile, 50);
             var thumbstream = System.IO.File.Open(tempthumbfile, FileMode.Open);
             AliYunOss.Instance.PutFileToOss(thumbstream,   fileName);
             thumbstream.Close();
-            stream.Close();
+         
             System.IO.File.Delete(tempfile);
             System.IO.File.Delete(tempthumbfile);
             FileCenter f = new FileCenter();
@@ -184,8 +193,13 @@ namespace XCoreProject.Api.Controllers
         private async Task<string> CreateThumb(Stream fileStream, string batchId, string fileName)
         {
             string timepre = Guid.NewGuid().ToString().Replace("-", "");
-            string tempfile = "/Users/cq/Downloads/" + timepre + "temp.jpg";
-            string tempthumbfile = "/Users/cq/Downloads/" + timepre + "tempthumb.jpg";
+            string tempfolder = _env.WebRootPath + "/" + "thumbTemp";
+            if (!Directory.Exists(tempfolder))
+            {
+                Directory.CreateDirectory(tempfolder);
+            }
+            string tempfile = tempfolder + "/"+timepre + "temp.jpg";
+            string tempthumbfile = tempfolder +"/" + timepre + "tempthumb.jpg";
             var stream = System.IO.File.Create(tempfile);
             await fileStream.CopyToAsync(stream);
             //压缩
