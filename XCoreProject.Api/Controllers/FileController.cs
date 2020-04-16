@@ -48,7 +48,7 @@ namespace XCoreProject.Api.Controllers
             //先检查有没有batchid,如果有，说明已开始存入过，那么不需要new batchid
             if (string.IsNullOrEmpty(batchId))
             {
-                batchId = IdCreatorHelper.CreateId("treeSupp_");
+                batchId = IdCreatorHelper.CreateId(SystemConst.PREF_BATCHID_FOR_PUB_TREE);
             }else
             {
                 //找到此batchid 已累计增加的index ,用缓存缓住
@@ -71,17 +71,17 @@ namespace XCoreProject.Api.Controllers
             {
                 var tfile = postFiles[i];
 
-                string fileName = AliossFolder + "/" + IdCreatorHelper.CreateIdNoTimestrap("pubtree", 6) + ".jpg";
+                string fileName = AliossFolder + "/" + IdCreatorHelper.CreateIdNoTimestrap(SystemConst.PREF_ALIOSS_FILENAME_FOR_TREE, 6) + ".jpg";
                 AliYunOss.Instance.PutFileToOss(tfile.OpenReadStream(), fileName);               
                 FileCenter f = new FileCenter();
                 if (currentIndex == 1)//默认第一个设置缩略图，设为主图 
                 {
-                    string filethumbName = IdCreatorHelper.CreateIdNoTimestrap("thumbpubtree", 6) + ".jpg";
+                    string filethumbName = IdCreatorHelper.CreateIdNoTimestrap(SystemConst.PREF_THUMB_NAME_PUB_TREE, 6) + ".jpg";
                     FileCenter  thumbfile =await  CreateThumb(tfile, batchId, AliossFolder+"/"+filethumbName);
                     dbfiles.Add(thumbfile);
                     upfileModels.ThumbnailUrl = thumbfile.Url;
                     upfileModels.MainPic = AliYunOssConfig.Endpoint +"/"+ fileName;//第一个默认主图
-                    f.ExterndAtt = "THUMBONTHIS"; //设置浮标，标明 缩略图建立在这个图上
+                    f.ExterndAtt = SystemConst.FILE_EXTERNARR_THUMBONTHIS; //设置浮标，标明 缩略图建立在这个图上
                 }
 
                 f.BatchId = batchId;
@@ -130,7 +130,7 @@ namespace XCoreProject.Api.Controllers
            
             FileCenter tfile = await _fileCenterServices.QueryById(fileId.Value);
            
-            if(tfile!=null && tfile.ExterndAtt== "THUMBONTHIS")
+            if(tfile!=null && tfile.ExterndAtt== SystemConst.FILE_EXTERNARR_THUMBONTHIS)
             {
                 //检测一下，如果是主图，要重新生成主图和缩略图信息
                 //下载下来这个批次中排首的图，重新生成缩略图
@@ -139,10 +139,10 @@ namespace XCoreProject.Api.Controllers
                Stream s = AliYunOss.Instance.GetFileFromAliOss(nextfile.OssKey);
                 if (nextfile != null)
                 {
-                    string filethumbName = IdCreatorHelper.CreateIdNoTimestrap("thumbpubtree", 6) + ".jpg";
+                    string filethumbName = IdCreatorHelper.CreateIdNoTimestrap(SystemConst.PREF_THUMB_NAME_PUB_TREE, 6) + ".jpg";
                     string AliossFolder = DateTime.Now.ToString("yyyyMMddHH");
                     string  newthumbUrl =  await CreateThumb(s, nextfile.BatchId, AliossFolder + "/" + filethumbName);
-                    nextfile.ExterndAtt = "THUMBONTHIS";
+                    nextfile.ExterndAtt = SystemConst.FILE_EXTERNARR_THUMBONTHIS;
                     //更新这个批次的缩略图信息
 
                     bool thumbok =  await _fileCenterServices.UpdateThisFileUrlByBatchIdAndSeq(nextfile.BatchId,0,newthumbUrl);
@@ -162,13 +162,13 @@ namespace XCoreProject.Api.Controllers
         private async Task<FileCenter> CreateThumb(IFormFile tfile,string batchId,string fileName)
         {
             string timepre= Guid.NewGuid().ToString().Replace("-","");
-            string tempfolder = _env.WebRootPath + "/" + "thumbTemp";
+            string tempfolder = _env.WebRootPath + "/" + SystemConst.TEMP_FOLDER_NAME;
             if(!Directory.Exists(tempfolder))
             {
                 Directory.CreateDirectory(tempfolder);
             }
-            string tempfile = tempfolder + "/" + timepre + "temp.jpg";
-            string tempthumbfile = tempfolder +"/"+ timepre + "tempthumb.jpg";
+            string tempfile = tempfolder + "/" + timepre + SystemConst.TEMP_IMGNAME_FOR_TREE;
+            string tempthumbfile = tempfolder +"/"+ timepre + SystemConst.TEMP_IMGNAME_FOR_TREE_THUMB;
             var stream = System.IO.File.Create(tempfile);
             await tfile.CopyToAsync(stream);
             stream.Close();
@@ -189,20 +189,20 @@ namespace XCoreProject.Api.Controllers
             f.Status = 0;
             f.OssKey = fileName;
             f.Url = AliYunOssConfig.Endpoint +"/"+  fileName;
-            f.ExterndAtt = "THUMB";
+            f.ExterndAtt = SystemConst.FILE_EXTERNARR_THUMB;
             return f;
         }
 
         private async Task<string> CreateThumb(Stream fileStream, string batchId, string fileName)
         {
             string timepre = Guid.NewGuid().ToString().Replace("-", "");
-            string tempfolder = _env.WebRootPath + "/" + "thumbTemp";
+            string tempfolder = _env.WebRootPath + "/" + SystemConst.TEMP_FOLDER_NAME;
             if (!Directory.Exists(tempfolder))
             {
                 Directory.CreateDirectory(tempfolder);
             }
-            string tempfile = tempfolder + "/"+timepre + "temp.jpg";
-            string tempthumbfile = tempfolder +"/" + timepre + "tempthumb.jpg";
+            string tempfile = tempfolder + "/"+timepre + SystemConst.TEMP_IMGNAME_FOR_TREE;
+            string tempthumbfile = tempfolder +"/" + timepre + SystemConst.TEMP_IMGNAME_FOR_TREE_THUMB;
             var stream = System.IO.File.Create(tempfile);
             await fileStream.CopyToAsync(stream);
             stream.Close();
