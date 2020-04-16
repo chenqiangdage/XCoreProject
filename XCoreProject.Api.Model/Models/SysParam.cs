@@ -21,6 +21,10 @@ namespace XCoreProject.Api.Model.Models
         /// </summary>
         public string Value { get; set; }
         /// <summary>
+        /// 类型 pick的数据 ，只有key就可以了。dropdown key -value对应。通过ConfigName拿所有的
+        /// </summary>
+        public string Type { get; set; }
+        /// <summary>
         /// Alpha1
         /// </summary>
         [SugarColumn(Length = 50, IsNullable = true, ColumnDataType = "nvarchar")]

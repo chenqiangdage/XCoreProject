@@ -38,5 +38,7 @@ namespace XCoreProject.Api.Common.Common
         /// 临时图片文件名
         /// </summary>
         public static string TEMP_IMGNAME_FOR_TREE_THUMB = "pubtempthumb.jpg";
+
+        public static string PREF_SYSCONF_PARAMS_FOR_TREE = "TREEMIAOMUDUODUO";
     }
 }
