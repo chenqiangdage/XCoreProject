@@ -34,7 +34,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 价格
         /// </summary>
-        public string ProductPrice { get; set; }
+        public decimal ProductPrice { get; set; }
         /// <summary>
         /// 单位
         /// </summary>
@@ -42,15 +42,15 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 产品库存
         /// </summary>
-        public string ProductStock { get; set; }
+        public int ProductStock { get; set; }
         /// <summary>
         /// 产品类型
         /// </summary>
-        public string ProductType { get; set; }
+        public int ProductType { get; set; }
         /// <summary>
         /// 产品状态(0,上线，5下线 10过期 20 非法）
         /// </summary>
-        public string ProductStatus { get; set; }
+        public int ProductStatus { get; set; }
         /// <summary>
         /// 产品所在地
         /// </summary>
@@ -58,31 +58,31 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 产品重量
         /// </summary>
-        public string ProductWeightL { get; set; }
+        public decimal ProductWeightL { get; set; }
         /// <summary>
         /// 产品高度
         /// </summary>
-        public string ProductHeightL { get; set; }
+        public decimal ProductHeightL { get; set; }
         /// <summary>
         /// 产品宽度
         /// </summary>
-        public string ProductWidthL { get; set; }
+        public decimal ProductWidthL { get; set; }
         /// <summary>
         /// 产品重量
         /// </summary>
-        public string ProductWeightH { get; set; }
+        public decimal ProductWeightH { get; set; }
         /// <summary>
         /// 产品高度
         /// </summary>
-        public string ProductHeightH { get; set; }
+        public decimal ProductHeightH { get; set; }
         /// <summary>
         /// 产品宽度
         /// </summary>
-        public string ProductWidthH { get; set; }
+        public decimal ProductWidthH { get; set; }
         /// <summary>
         /// 产品被浏览次数
         /// </summary>
-        public string ProductWatched { get; set; }
+        public long ProductWatched { get; set; }
         /// <summary>
         /// 产品拥有者
         /// </summary>
@@ -94,7 +94,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 有效截止时间
         /// </summary>
-        public string EffecitiveTime { get; set; }
+        public DateTime EffecitiveTime { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
@@ -102,7 +102,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 创建时间
         /// </summary>
-        public string CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
         /// <summary>
         /// 创建者（可以是系统帮忙创建）
         /// </summary>
@@ -110,7 +110,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 更新时间
         /// </summary>
-        public string ModifyTime { get; set; }
+        public DateTime ModifyTime { get; set; }
         /// <summary>
         /// 更新人
         /// </summary>
@@ -118,11 +118,11 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 经度
         /// </summary>
-        public string Longitude { get; set; }
+        public double Longitude { get; set; }
         /// <summary>
         /// 纬度
         /// </summary>
-        public string Latitude { get; set; }
+        public double Latitude { get; set; }
         /// <summary>
         /// 属性1
         /// </summary>

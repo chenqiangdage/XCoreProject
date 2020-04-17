@@ -7,6 +7,9 @@ namespace XCoreProject.Api.Model.Dto
         /// 图片上传的批次ID
         /// </summary>
         public string BatchId { get; set; }
+
+        public string ProductImgUrl { get; set; }
+        public string ThumbImgUrl { get; set; }
         /// <summary>
         /// 产品名称
         /// </summary>
@@ -15,27 +18,27 @@ namespace XCoreProject.Api.Model.Dto
         /// <summary>
         /// 产品重量 low
         /// </summary>
-        public string ProductWeightL { get; set; }
+        public decimal ProductWeightL { get; set; }
         /// <summary>
         /// 产品高度 low
         /// </summary>
-        public string ProductHeightL { get; set; }
+        public decimal ProductHeightL { get; set; }
         /// <summary>
         /// 产品宽度 low
         /// </summary>
-        public string ProductWidthL { get; set; }
+        public decimal ProductWidthL { get; set; }
         /// <summary>
         /// 产品重量 high
         /// </summary>
-        public string ProductWeightH { get; set; }
+        public decimal ProductWeightH { get; set; }
         /// <summary>
         /// 产品高度 high
         /// </summary>
-        public string ProductHeightH { get; set; }
+        public decimal ProductHeightH { get; set; }
         /// <summary>
         /// 产品宽度 high
         /// </summary>
-        public string ProductWidthH { get; set; }
+        public decimal ProductWidthH { get; set; }
         /// <summary>
         /// 价格
         /// </summary>
@@ -43,7 +46,9 @@ namespace XCoreProject.Api.Model.Dto
         /// <summary>
         /// 数量
         /// </summary>
-        public decimal ProductStock { get; set; }
+        public int ProductStock { get; set; }
+
+        public string ProductUnit { get; set; }
         /// <summary>
         /// 供货地
         /// </summary>
@@ -57,7 +62,16 @@ namespace XCoreProject.Api.Model.Dto
         /// </summary>
         public string Remarks { get; set; }
 
-       
+        /// <summary>
+        /// 经度
+        /// </summary>
+        public double Longitude { get; set; }
+        /// <summary>
+        /// 纬度
+        /// </summary>
+        public double Latitude { get; set; }
+
+
 
     }
 }

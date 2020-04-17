@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using XCoreProject.Api.Model.Models;
 
 namespace XCoreProject.Api.Model.Dto
 {
@@ -54,6 +55,8 @@ namespace XCoreProject.Api.Model.Dto
         /// 属性2
         /// </summary>
         public string Prop2 { get; set; }
+
+       
     }
 }
 

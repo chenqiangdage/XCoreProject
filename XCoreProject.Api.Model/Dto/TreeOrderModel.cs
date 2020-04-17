@@ -1,4 +1,6 @@
 ﻿using System;
+using XCoreProject.Api.Model.Models;
+
 namespace XCoreProject.Api.Model.Dto
 {
     public class TreeOrderModel:PubProductBaseModel
@@ -51,5 +53,47 @@ namespace XCoreProject.Api.Model.Dto
         /// 分枝点 high
         /// </summary>
         public string Prop12 { get; set; }
+        public string Prop13 { get; set; }
+        public string Prop14 { get; set; }
+        public string Prop15 { get; set; }
+        public string Prop16 { get; set; }
+
+        public Products ToDbEntity()
+        {
+            Products p = new Products();
+            p.CreateTime = DateTime.Now;
+            p.EffecitiveTime = this.EffecitiveTime;
+            p.Latitude = this.Latitude;
+            p.Longitude = this.Longitude;         
+            p.PicBatchId = this.BatchId;
+            p.ProductAddress = this.Address;
+            p.ProductHeightH = this.ProductHeightH;
+            p.ProductHeightL = this.ProductHeightL;
+            p.ProductImgUrl = this.ProductImgUrl;
+            p.ProductName = this.ProductName;
+            p.ProductPrice = this.ProductPrice;
+            p.ProductStock = this.ProductStock;
+            p.ProductUnit = this.ProductUnit;
+            p.ProductWeightH = this.ProductWeightH;
+            p.ProductWeightL = this.ProductWeightL;
+            p.ProductWidthH = this.ProductWidthH;
+            p.Prop1 = this.Prop1;
+            p.Prop2 = this.Prop2;
+            p.Prop3 = this.Prop3;
+            p.Prop4 = this.Prop4;
+            p.Prop5 = this.Prop5;
+            p.Prop6 = this.Prop6;
+            p.Prop7 = this.Prop7;
+            p.Prop8 = this.Prop8;
+            p.Prop9 = this.Prop9;
+            p.Prop10 = this.Prop10;
+            p.Prop11 = this.Prop11;
+            p.Prop12 = this.Prop12;
+            p.Prop13 = this.Prop13;
+            p.Prop14 = this.Prop14;
+            p.Prop15 = this.Prop15;
+            p.Prop16 = this.Prop16;
+            return p;
+        }
     }
 }
