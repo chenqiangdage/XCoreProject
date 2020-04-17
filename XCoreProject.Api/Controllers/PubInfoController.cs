@@ -15,6 +15,7 @@ using XCoreProject.Api.Model.Models;
 namespace XCoreProject.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
+    [Produces("application/json")]
     [ApiController]
     public class PubInfoController : ControllerBase
     {
@@ -27,11 +28,13 @@ namespace XCoreProject.Api.Controllers
             _PruductServices = pruductServices;
             _env = env;
         }
+        [HttpPost]
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="pubTreeModel"></param>
-        public async Task<MessageModel<string>> PushOneSupport([FromBody] TreeOrderModel pubTreeModel)
+        public async Task<MessageModel<string>> PushOneSupport(TreeOrderModel pubTreeModel)
         {
             var responseData = new MessageModel<string>();
             if (string.IsNullOrEmpty(pubTreeModel.BatchId))

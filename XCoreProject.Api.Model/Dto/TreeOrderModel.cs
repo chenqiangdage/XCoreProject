@@ -53,9 +53,15 @@ namespace XCoreProject.Api.Model.Dto
         /// 分枝点 high
         /// </summary>
         public string Prop12 { get; set; }
+        /// <summary>
+        /// 热门推荐天数
+        /// </summary>
         public string Prop13 { get; set; }
         public string Prop14 { get; set; }
         public string Prop15 { get; set; }
+        /// <summary>
+        /// 茎秆公分
+        /// </summary>
         public string Prop16 { get; set; }
 
         public Products ToDbEntity()
@@ -63,20 +69,21 @@ namespace XCoreProject.Api.Model.Dto
             Products p = new Products();
             p.CreateTime = DateTime.Now;
             p.EffecitiveTime = this.EffecitiveTime;
-            p.Latitude = this.Latitude;
-            p.Longitude = this.Longitude;         
+            p.Latitude = this.Latitude.HasValue ? this.Latitude.Value : 0.00;
+            p.Longitude = this.Longitude.HasValue ? this.Longitude.Value : 0;          
             p.PicBatchId = this.BatchId;
             p.ProductAddress = this.Address;
-            p.ProductHeightH = this.ProductHeightH;
-            p.ProductHeightL = this.ProductHeightL;
+            p.ProductHeightH = this.ProductHeightH.HasValue?this.ProductHeightH.Value:0;
+            p.ProductHeightL = this.ProductHeightL.HasValue?this.ProductHeightL.Value:0;
             p.ProductImgUrl = this.ProductImgUrl;
             p.ProductName = this.ProductName;
             p.ProductPrice = this.ProductPrice;
-            p.ProductStock = this.ProductStock;
+            p.ProductStock = this.ProductStock.HasValue?this.ProductStock.Value:0;
             p.ProductUnit = this.ProductUnit;
-            p.ProductWeightH = this.ProductWeightH;
-            p.ProductWeightL = this.ProductWeightL;
-            p.ProductWidthH = this.ProductWidthH;
+            p.ProductWeightH = this.ProductWeightH.HasValue?this.ProductWeightH.Value:0;
+            p.ProductWeightL = this.ProductWeightL.HasValue?this.ProductWeightL.Value:0;
+            p.ProductWidthH = this.ProductWidthH.HasValue?this.ProductWidthH.Value:0;
+            p.ProductWidthL = this.ProductWidthL.HasValue ? this.ProductWidthL.Value : 0;
             p.Prop1 = this.Prop1;
             p.Prop2 = this.Prop2;
             p.Prop3 = this.Prop3;
