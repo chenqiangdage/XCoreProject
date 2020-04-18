@@ -40,5 +40,7 @@ namespace XCoreProject.Api.Common.Common
         public static string TEMP_IMGNAME_FOR_TREE_THUMB = "pubtempthumb.jpg";
 
         public static string PREF_SYSCONF_PARAMS_FOR_TREE = "TREEMIAOMUDUODUO";
+
+        public static string PREF_ADVERTISEMENT = "advertisement_";
     }
 }

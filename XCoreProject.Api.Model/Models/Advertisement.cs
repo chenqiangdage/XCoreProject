@@ -57,6 +57,10 @@ namespace XCoreProject.Api.Model.Models
         /// </summary>
         public DateTime EffecitiveTime { get; set; }
 
+        public int Type { get; set; }
+
+        public string Owner { get; set; }
+
 
     }
 }

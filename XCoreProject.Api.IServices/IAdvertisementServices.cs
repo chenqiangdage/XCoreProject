@@ -16,7 +16,7 @@ namespace XCoreProject.Api.IServices
         //bool Delete(Advertisement model);
         //bool Update(Advertisement model);
         //List<Advertisement> Query(Expression<Func<Advertisement, bool>> whereExpression);
-
+        Task<List<Advertisement>> GetAdvertisementByOwner(string owner);
         void ReturnExp();
     }
 }

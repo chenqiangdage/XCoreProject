@@ -26,6 +26,7 @@ namespace XCoreProject.Api.Controllers
         readonly ISysParamServices _sysParamServices;
         IWebHostEnvironment _env;
 
+        [HttpGet]
         /// <summary>
         /// 获取所有 选择器 的参数
         /// </summary>
@@ -66,6 +67,7 @@ namespace XCoreProject.Api.Controllers
             return data;
             
         }
+        [HttpGet]
         /// <summary>
         /// 获取所有的 下拉框 的参数
         /// </summary>

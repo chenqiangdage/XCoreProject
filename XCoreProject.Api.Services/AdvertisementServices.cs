@@ -20,6 +20,11 @@ namespace XCoreProject.Api.Services
             base.BaseDal = dal;
         }
 
+        public async  Task<List<Advertisement>> GetAdvertisementByOwner(string owner)
+        {
+            return await _dal.Query(u => u.Owner == owner);
+        }
+
         public void ReturnExp()
         {
 

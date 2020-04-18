@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using XCoreProject.Api.Model.Dto;
 using Microsoft.AspNetCore.Hosting;
+using XCoreProject.Api.Common.Common;
 
 namespace XCoreProject.Api.Controllers
 {
@@ -26,6 +27,7 @@ namespace XCoreProject.Api.Controllers
     public class ClientStageDataController : ControllerBase
     {
         IProductServices _productServices;
+        IAdvertisementServices _advertisementServices;
         readonly ICacheHelper _cacheHelper;
         IWebHostEnvironment _env;
         /// <summary>
@@ -34,13 +36,15 @@ namespace XCoreProject.Api.Controllers
         /// <param name="IFileCenterServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
-        public ClientStageDataController(IProductServices productServices, ICacheHelper IcacheHelper, IWebHostEnvironment env)
+        public ClientStageDataController(  IProductServices productServices, IAdvertisementServices advertisementServices, ICacheHelper IcacheHelper, IWebHostEnvironment env)
         {
             _productServices = productServices;
+            _advertisementServices = advertisementServices;
             _cacheHelper = IcacheHelper;
             _env = env;
         }
 
+        [HttpGet]
         /// <summary>
         ///  获取产品列表
         /// </summary>
@@ -57,7 +61,27 @@ namespace XCoreProject.Api.Controllers
             data.response = pageDatas;
             return data;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
+        [HttpGet]
+        
+        public async Task<MessageModel<List<Advertisement>>> GetAdvertiseList(string site)
+        {
+            var data = new MessageModel<List<Advertisement>>();
+            // todo 
+            var ads =  _cacheHelper.Get<List<Advertisement>>(SystemConst.PREF_ADVERTISEMENT + site);
+            if (ads == null)
+            {
+                 ads = await _advertisementServices.GetAdvertisementByOwner(site);
+                _cacheHelper.Set(SystemConst.PREF_ADVERTISEMENT + site, ads, DateTime.Now.AddMonths(1));
+            }
+            data.response = ads;
+            return data;
 
+        }
 
         
     }
