@@ -76,6 +76,7 @@ namespace XCoreProject.Api.Model.Dto
             p.ProductHeightH = this.ProductHeightH.HasValue?this.ProductHeightH.Value:0;
             p.ProductHeightL = this.ProductHeightL.HasValue?this.ProductHeightL.Value:0;
             p.ProductImgUrl = this.ProductImgUrl;
+            p.ThumbImgUrl = this.ThumbImgUrl;
             p.ProductName = this.ProductName;
             p.ProductPrice = this.ProductPrice;
             p.ProductStock = this.ProductStock.HasValue?this.ProductStock.Value:0;

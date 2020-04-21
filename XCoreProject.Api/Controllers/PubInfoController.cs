@@ -44,12 +44,13 @@ namespace XCoreProject.Api.Controllers
             }
             //build dbdata
             Products product = pubTreeModel.ToDbEntity();
-            product.Creator =  product.OwnerId = "todo";
+            product.Creator  = "todo";
             product.OwnerName = "todo";
+            product.OwnerId = 1;
             product.ProductType = (int)SysEnum.Enum_Tree_ProductType.SUPPORT;
             product.ProductStatus = (int)SysEnum.Enum_ProductStatus.ON;
             //sava data
-            int result= await _PruductServices.Add(product);
+            bool isok= await _PruductServices.AddIsIdentity(product);
             return responseData;
 
         }

@@ -22,7 +22,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 产品缩略图地址
         /// </summary>
-        public string ThumbnailUrl { get; set; }
+        public string ThumbImgUrl { get; set; }
         /// <summary>
         /// 产品描述
         /// </summary>
@@ -86,7 +86,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 产品拥有者
         /// </summary>
-        public string OwnerId { get; set; }
+        public int? OwnerId { get; set; }
         /// <summary>
         /// 拥有者的名字
         /// </summary>
@@ -94,7 +94,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 有效截止时间
         /// </summary>
-        public DateTime EffecitiveTime { get; set; }
+        public DateTime? EffecitiveTime { get; set; }
         /// <summary>
         /// 备注
         /// </summary>

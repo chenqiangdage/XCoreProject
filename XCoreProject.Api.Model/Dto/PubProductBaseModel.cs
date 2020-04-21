@@ -56,7 +56,7 @@ namespace XCoreProject.Api.Model.Dto
         /// <summary>
         /// 截止日期
         /// </summary>
-        public DateTime EffecitiveTime { get; set; }
+        public DateTime? EffecitiveTime { get; set; }
         /// <summary>
         /// 备注
         /// </summary>

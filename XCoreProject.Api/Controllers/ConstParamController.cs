@@ -19,7 +19,7 @@ namespace XCoreProject.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Permissions.Name)]
+  
     public class ConstParamController : ControllerBase
     {
         readonly ICacheHelper _cacheHelper;
@@ -87,7 +87,7 @@ namespace XCoreProject.Api.Controllers
             string[] types = type.Split(";").ToArray();
             foreach (string st in types)
             {
-                Dictionary<string, string> stData = _cacheHelper.Get<Dictionary<string, string>>(SystemConst.PREF_SYSCONF_PARAMS_FOR_TREE+st);
+                List<DropDownModel> stData = _cacheHelper.Get<List<DropDownModel>>(SystemConst.PREF_SYSCONF_PARAMS_FOR_TREE+st);
                 if (stData != null && stData.Count > 0)
                 {
                     ppdatas.Datas.Add(st, stData);
@@ -99,8 +99,8 @@ namespace XCoreProject.Api.Controllers
                     List<SysParam> dbDatas = await _sysParamServices.GetSysParamsByConfigName(st);
                     if (dbDatas != null && dbDatas.Count > 0)
                     {
-                        Dictionary<string, string> Dict = new Dictionary<string, string>();
-                        dbDatas.ForEach(u => Dict.Add(u.Key, u.Value));
+                        List<DropDownModel> Dict = new List<DropDownModel>();
+                        dbDatas.ForEach(u => Dict.Add(new DropDownModel(u.Key,u.Value)));
                         _cacheHelper.Set(SystemConst.PREF_SYSCONF_PARAMS_FOR_TREE + st, Dict, DateTime.Now.AddMonths(1));
                     }
                 }
