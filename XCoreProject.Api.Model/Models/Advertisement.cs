@@ -1,5 +1,6 @@
 ﻿using SqlSugar;
 using System;
+using XCoreProject.Api.Model.Dto;
 
 namespace XCoreProject.Api.Model.Models
 {
@@ -33,7 +34,7 @@ namespace XCoreProject.Api.Model.Models
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime Createdate { get; set; } = DateTime.Now;
+        public DateTime CreateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 创建人
         /// </summary>
@@ -62,5 +63,13 @@ namespace XCoreProject.Api.Model.Models
         public string Owner { get; set; }
 
 
+        public AdvertisementModel ToViewModel()
+        {
+            AdvertisementModel am = new AdvertisementModel();
+            am.title = this.Title;
+            am.url = this.Url;
+            am.src = this.ImgUrl;
+            return am;
+        }
     }
 }

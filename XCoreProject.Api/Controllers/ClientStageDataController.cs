@@ -23,7 +23,7 @@ namespace XCoreProject.Api.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Permissions.Name)]
+   // [Authorize(Permissions.Name)]
     public class ClientStageDataController : ControllerBase
     {
         IProductServices _productServices;
@@ -68,15 +68,22 @@ namespace XCoreProject.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         
-        public async Task<MessageModel<List<Advertisement>>> GetAdvertiseList(string site)
+        public async Task<MessageModel<List<AdvertisementModel>>> GetAdvertiseList(string site)
         {
-            var data = new MessageModel<List<Advertisement>>();
-            // todo 
-            var ads =  _cacheHelper.Get<List<Advertisement>>(SystemConst.PREF_ADVERTISEMENT + site);
+            var data = new MessageModel<List<AdvertisementModel>>();
+            // todo
+            
+            var ads =  _cacheHelper.Get<List<AdvertisementModel>>(SystemConst.PREF_ADVERTISEMENT + site);
             if (ads == null)
             {
-                 ads = await _advertisementServices.GetAdvertisementByOwner(site);
-                _cacheHelper.Set(SystemConst.PREF_ADVERTISEMENT + site, ads, DateTime.Now.AddMonths(1));
+                var  addbs = await _advertisementServices.GetAdvertisementByOwner(site);
+                if(null!=addbs)
+                {
+                    ads = new List<AdvertisementModel>();
+                    addbs.ForEach(u => ads.Add(u.ToViewModel()));
+                    _cacheHelper.Set(SystemConst.PREF_ADVERTISEMENT + site, ads, DateTime.Now.AddMonths(1));
+                }
+              
             }
             data.response = ads;
             return data;
