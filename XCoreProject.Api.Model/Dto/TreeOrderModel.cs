@@ -85,6 +85,7 @@ namespace XCoreProject.Api.Model.Dto
             p.ProductWeightL = this.ProductWeightL.HasValue?this.ProductWeightL.Value:0;
             p.ProductWidthH = this.ProductWidthH.HasValue?this.ProductWidthH.Value:0;
             p.ProductWidthL = this.ProductWidthL.HasValue ? this.ProductWidthL.Value : 0;
+            p.ReceiveAddress = this.ReceiveAddress;
             p.Prop1 = this.Prop1;
             p.Prop2 = this.Prop2;
             p.Prop3 = this.Prop3;

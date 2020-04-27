@@ -54,5 +54,32 @@ namespace XCoreProject.Api.Controllers
             return responseData;
 
         }
+
+        [HttpPost]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pubTreeModel"></param>
+        public async Task<MessageModel<string>> PushDemand(TreeOrderModel pubTreeModel)
+        {
+            var responseData = new MessageModel<string>();
+            if (string.IsNullOrEmpty(pubTreeModel.BatchId))
+            {
+                responseData.msg = "没有上传图片";
+                return responseData;
+            }
+            //build dbdata
+            Products product = pubTreeModel.ToDbEntity();
+            product.Creator = "todo";
+            product.OwnerName = "todo";
+            product.OwnerId = 1;
+            product.ProductType = (int)SysEnum.Enum_Tree_ProductType.DEMAND;
+            product.ProductStatus = (int)SysEnum.Enum_ProductStatus.ON;
+            //sava data
+            bool isok = await _PruductServices.AddIsIdentity(product);
+            return responseData;
+
+        }
+
     }
 }

@@ -54,6 +54,10 @@ namespace XCoreProject.Api.Model.Dto
         /// </summary>
         public string Address { get; set; }
         /// <summary>
+        /// 收货地
+        /// </summary>
+        public string ReceiveAddress { get; set; }
+        /// <summary>
         /// 截止日期
         /// </summary>
         public DateTime? EffecitiveTime { get; set; }

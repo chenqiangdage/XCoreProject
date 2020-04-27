@@ -55,6 +55,7 @@ namespace XCoreProject.Api.Model.Models
         /// 产品所在地
         /// </summary>
         public string ProductAddress { get; set; }
+        public string ReceiveAddress { get; set; }
         /// <summary>
         /// 产品重量
         /// </summary>
